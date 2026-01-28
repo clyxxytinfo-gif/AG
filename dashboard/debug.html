@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .debug-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #007bff;
+        }
+        .error {
+            border-left-color: #dc3545;
+            color: #dc3545;
+        }
+        .success {
+            border-left-color: #28a745;
+            color: #28a745;
+        }
+        pre {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dashboard Debug Console</h1>
+    
+    <div id="debug-output"></div>
+    
+    <h2>Test-Aktionen</h2>
+    <button onclick="testAuthManager()">AuthManager Test</button>
+    <button onclick="testLoginFlow()">Login Flow Test</button>
+    <button onclick="clearDebug()">Debug leeren</button>
+
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
+        const debugOutput = document.getElementById('debug-output');
+
+        function log(message, type = 'info') {
+            const box = document.createElement('div');
+            box.className = `debug-box ${type}`;
+            box.innerHTML = `<strong>[${type.toUpperCase()}]</strong> ${message}<br><small>${new Date().toLocaleTimeString()}</small>`;
+            debugOutput.appendChild(box);
+            console.log(`[${type}]`, message);
+        }
+
+        function clearDebug() {
+            debugOutput.innerHTML = '';
+        }
+
+        function testAuthManager() {
+            log('AuthManager Test gestartet...');
+            
+            if (typeof authManager === 'undefined') {
+                log('❌ authManager ist NICHT definiert!', 'error');
+                return;
+            }
+            
+            log('✅ authManager ist definiert', 'success');
+            log(`Benutzer in System: ${authManager.users.length}`, 'success');
+            
+            // Test-Login
+            const testEmail = 'admin@computerservice.de';
+            const testPassword = 'admin123';
+            
+            log(`Versuche Login mit: ${testEmail} / ${testPassword}`);
+            const result = authManager.login(testEmail, testPassword);
+            
+            if (result.success) {
+                log(`✅ Login erfolgreich! Benutzer: ${authManager.currentUser.name}`, 'success');
+            } else {
+                log(`❌ Login fehlgeschlagen: ${result.message}`, 'error');
+            }
+        }
+
+        function testLoginFlow() {
+            log('Login Flow Test gestartet...');
+            
+            if (typeof LoginManager === 'undefined') {
+                log('❌ LoginManager Klasse ist NICHT definiert!', 'error');
+                return;
+            }
+            
+            log('✅ LoginManager Klasse ist definiert', 'success');
+            
+            // Check form elements
+            const loginForm = document.getElementById('loginForm');
+            const loginEmail = document.getElementById('loginEmail');
+            const loginPassword = document.getElementById('loginPassword');
+            
+            if (!loginForm) {
+                log('❌ Login Form nicht gefunden! (loginForm ID)', 'error');
+                return;
+            }
+            log('✅ Login Form gefunden', 'success');
+            
+            if (!loginEmail) {
+                log('❌ Login Email Input nicht gefunden! (loginEmail ID)', 'error');
+                return;
+            }
+            log('✅ Login Email Input gefunden', 'success');
+            
+            if (!loginPassword) {
+                log('❌ Login Password Input nicht gefunden! (loginPassword ID)', 'error');
+                return;
+            }
+            log('✅ Login Password Input gefunden', 'success');
+        }
+
+        // Auto-Tests beim Laden
+        window.addEventListener('load', () => {
+            log('Window geladen, starte Auto-Tests...');
+            testAuthManager();
+            log('---');
+            testLoginFlow();
+        });
+    </script>
+</body>
+</html>

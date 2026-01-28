@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Dashboard - Computer Service AG</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container active">
+        <div class="login-wrapper">
+            <div class="login-box">
+                <div class="login-header">
+                    <div class="login-logo">🏢</div>
+                    <h1>Team Dashboard</h1>
+                    <p>Computer Service AG & Technik AG</p>
+                </div>
+
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="loginEmail">E-Mail</label>
+                        <input type="email" id="loginEmail" placeholder="E-Mail-Adresse" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Passwort</label>
+                        <input type="password" id="loginPassword" placeholder="Passwort" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox">
+                            <input type="checkbox" id="rememberMe">
+                            <span>Anmeldedaten merken</span>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-login">Anmelden</button>
+                </form>
+
+                <div class="login-footer">
+                    <p>Noch kein Konto? <button type="button" class="link-btn" id="switchToRegister">Registrieren</button></p>
+                    <hr>
+                    <p class="demo-hint">Demo-Konten:</p>
+                    <div class="demo-accounts">
+                        <small>Admin: admin@computerservice.de / admin123</small><br>
+                        <small>Teamleiter: anna@computerservice.de / anna123</small><br>
+                        <small>Mitarbeiter: peter@computerservice.de / peter123</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="register-box" id="registerBox" style="display: none;">
+                <div class="login-header">
+                    <h2>Registrieren</h2>
+                </div>
+
+                <form id="registerForm" class="login-form">
+                    <div class="form-group">
+                        <label for="registerName">Name</label>
+                        <input type="text" id="registerName" placeholder="Vollname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">E-Mail</label>
+                        <input type="email" id="registerEmail" placeholder="E-Mail-Adresse" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Passwort</label>
+                        <input type="password" id="registerPassword" placeholder="Passwort" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPasswordConfirm">Passwort wiederholen</label>
+                        <input type="password" id="registerPasswordConfirm" placeholder="Passwort wiederholen" required>
+                    </div>
+                    <button type="submit" class="btn btn-login">Registrieren</button>
+                </form>
+
+                <div class="login-footer">
+                    <p>Bereits registriert? <button type="button" class="link-btn" id="switchToLogin">Anmelden</button></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container" id="appContainer" style="display: none;">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Team Dashboard</h1>
+                <p class="company-name">Computer Service AG</p>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <button class="menu-item active" data-page="dashboard">
+                    <span class="icon">📊</span>
+                    <span class="label">Dashboard</span>
+                </button>
+                <button class="menu-item" data-page="tickets">
+                    <span class="icon">🎫</span>
+                    <span class="label">Tickets</span>
+                </button>
+                <button class="menu-item" data-page="tasks">
+                    <span class="icon">✓</span>
+                    <span class="label">Aufgaben</span>
+                </button>
+                <button class="menu-item" data-page="projects">
+                    <span class="icon">📁</span>
+                    <span class="label">Projekte</span>
+                </button>
+                <button class="menu-item" data-page="teams">
+                    <span class="icon">👥</span>
+                    <span class="label">Teams & Nutzer</span>
+                </button>
+                <button class="menu-item" data-page="customers">
+                    <span class="icon">🤝</span>
+                    <span class="label">Kunden</span>
+                </button>
+                <button class="menu-item" data-page="reports">
+                    <span class="icon">📈</span>
+                    <span class="label">Berichte</span>
+                </button>
+                <button class="menu-item" data-page="settings">
+                    <span class="icon">⚙️</span>
+                    <span class="label">Einstellungen</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">👤</div>
+                    <div class="user-info">
+                        <p id="userName">Max Mustermann</p>
+                        <p id="userRole">Administrator</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <h2 id="pageTitle">Dashboard</h2>
+                    <p id="pageSubtitle">Willkommen im Team Dashboard</p>
+                </div>
+                <div class="header-right">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Suchen...">
+                        <button type="button" class="search-btn">🔍</button>
+                    </div>
+                    <button type="button" class="notification-btn" id="notificationBtn">🔔 <span class="badge" id="notificationBadge">3</span></button>
+                    <button type="button" class="toggle-theme-btn" id="themeToggle">🌙</button>
+                    <div class="user-menu-dropdown">
+                        <button type="button" class="user-menu-btn" id="userMenuBtn">👤</button>
+                        <div class="dropdown-menu" id="userDropdownMenu">
+                            <a href="#" data-action="profile">👤 Mein Profil</a>
+                            <a href="#" data-action="password">🔑 Passwort ändern</a>
+                            <a href="#" data-action="settings">⚙️ Einstellungen</a>
+                            <hr>
+                            <a href="#" data-action="logout">🚪 Abmelden</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Sections -->
+            <div class="content-wrapper">
+                
+                <!-- Dashboard Page -->
+                <section id="dashboard" class="page active">
+                    <div class="dashboard-grid">
+                        <!-- KPI Kacheln -->
+                        <div class="kpi-section">
+                            <h3>Wichtige Kennzahlen</h3>
+                            <div class="kpi-grid">
+                                <div class="kpi-card">
+                                    <div class="kpi-icon">🎫</div>
+                                    <div class="kpi-content">
+                                        <p class="kpi-label">Offene Tickets</p>
+                                        <p class="kpi-value" id="kpiOpenTickets">12</p>
+                                    </div>
+                                </div>
+                                <div class="kpi-card">
+                                    <div class="kpi-icon">⏰</div>
+                                    <div class="kpi-content">
+                                        <p class="kpi-label">Überfällig</p>
+                                        <p class="kpi-value red" id="kpiOverdue">3</p>
+                                    </div>
+                                </div>
+                                <div class="kpi-card">
+                                    <div class="kpi-icon">✓</div>
+                                    <div class="kpi-content">
+                                        <p class="kpi-label">Meine Aufgaben</p>
+                                        <p class="kpi-value" id="kpiMyTasks">7</p>
+                                    </div>
+                                </div>
+                                <div class="kpi-card">
+                                    <div class="kpi-icon">👥</div>
+                                    <div class="kpi-content">
+                                        <p class="kpi-label">Team-Mitglieder</p>
+                                        <p class="kpi-value" id="kpiTeamMembers">12</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Meine Tickets -->
+                        <div class="dashboard-section">
+                            <div class="section-header">
+                                <h3>Meine aktuellen Tickets</h3>
+                                <a href="#" class="link-all" data-page="tickets">Alle anzeigen →</a>
+                            </div>
+                            <div id="myTicketsContainer" class="ticket-list">
+                                <!-- Wird durch JavaScript gefüllt -->
+                            </div>
+                        </div>
+
+                        <!-- Team-Übersicht -->
+                        <div class="dashboard-section">
+                            <div class="section-header">
+                                <h3>Team-Übersicht</h3>
+                                <a href="#" class="link-all" data-page="teams">Team-Details →</a>
+                            </div>
+                            <div id="teamOverviewContainer" class="team-list">
+                                <!-- Wird durch JavaScript gefüllt -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tickets Page -->
+                <section id="tickets" class="page">
+                    <div class="page-header">
+                        <h2>Ticketverwaltung</h2>
+                        <button class="btn btn-primary" id="newTicketBtn">+ Neues Ticket</button>
+                    </div>
+
+                    <!-- Filter -->
+                    <div class="filter-bar">
+                        <select id="filterStatus" class="filter-select">
+                            <option value="">Alle Status</option>
+                            <option value="neu">Neu</option>
+                            <option value="in-bearbeitung">In Bearbeitung</option>
+                            <option value="wartend">Wartend</option>
+                            <option value="gelöst">Gelöst</option>
+                            <option value="geschlossen">Geschlossen</option>
+                        </select>
+                        <select id="filterPriority" class="filter-select">
+                            <option value="">Alle Prioritäten</option>
+                            <option value="niedrig">Niedrig</option>
+                            <option value="mittel">Mittel</option>
+                            <option value="hoch">Hoch</option>
+                            <option value="kritisch">Kritisch</option>
+                        </select>
+                        <select id="filterCategory" class="filter-select">
+                            <option value="">Alle Kategorien</option>
+                            <option value="hardware">Hardware</option>
+                            <option value="software">Software</option>
+                            <option value="netzwerk">Netzwerk</option>
+                            <option value="support">Support</option>
+                        </select>
+                    </div>
+
+                    <!-- Tickets Table -->
+                    <div class="table-container">
+                        <table id="ticketsTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Ticket-ID</th>
+                                    <th>Titel</th>
+                                    <th>Kategorie</th>
+                                    <th>Priorität</th>
+                                    <th>Status</th>
+                                    <th>Zugewiesen zu</th>
+                                    <th>Fällig am</th>
+                                    <th>Aktionen</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ticketsTableBody">
+                                <!-- Wird durch JavaScript gefüllt -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Tasks Page -->
+                <section id="tasks" class="page">
+                    <div class="page-header">
+                        <h2>Aufgaben</h2>
+                        <button class="btn btn-primary" id="newTaskBtn">+ Neue Aufgabe</button>
+                    </div>
+
+                    <!-- Task Kanban Board -->
+                    <div class="kanban-board">
+                        <div class="kanban-column">
+                            <h3 class="kanban-title">Offen</h3>
+                            <div class="kanban-cards" id="kanban-offen">
+                                <!-- Wird durch JavaScript gefüllt -->
+                            </div>
+                        </div>
+                        <div class="kanban-column">
+                            <h3 class="kanban-title">In Arbeit</h3>
+                            <div class="kanban-cards" id="kanban-in-arbeit">
+                                <!-- Wird durch JavaScript gefüllt -->
+                            </div>
+                        </div>
+                        <div class="kanban-column">
+                            <h3 class="kanban-title">Blockiert</h3>
+                            <div class="kanban-cards" id="kanban-blockiert">
+                                <!-- Wird durch JavaScript gefüllt -->
+                            </div>
+                        </div>
+                        <div class="kanban-column">
+                            <h3 class="kanban-title">Erledigt</h3>
+                            <div class="kanban-cards" id="kanban-erledigt">
+                                <!-- Wird durch JavaScript gefüllt -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Projects Page -->
+                <section id="projects" class="page">
+                    <div class="page-header">
+                        <h2>Projekte</h2>
+                        <button class="btn btn-primary" id="newProjectBtn">+ Neues Projekt</button>
+                    </div>
+
+                    <div class="projects-grid" id="projectsGrid">
+                        <!-- Wird durch JavaScript gefüllt -->
+                    </div>
+                </section>
+
+                <!-- Teams Page -->
+                <section id="teams" class="page">
+                    <div class="page-header">
+                        <h2>Teams & Nutzer</h2>
+                        <button class="btn btn-primary" id="newUserBtn">+ Neuer Nutzer</button>
+                    </div>
+
+                    <div class="teams-container">
+                        <!-- Teams List -->
+                        <div class="teams-section">
+                            <h3>Teams</h3>
+                            <div id="teamsListContainer" class="teams-list">
+                                <!-- Wird durch JavaScript gefüllt -->
+                            </div>
+                        </div>
+
+                        <!-- Users Table -->
+                        <div class="users-section">
+                            <h3>Nutzer</h3>
+                            <div class="table-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>E-Mail</th>
+                                            <th>Rolle</th>
+                                            <th>Team</th>
+                                            <th>Status</th>
+                                            <th>Aktionen</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="usersTableBody">
+                                        <!-- Wird durch JavaScript gefüllt -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Customers Page -->
+                <section id="customers" class="page">
+                    <div class="page-header">
+                        <h2>Kundenverwaltung</h2>
+                        <button class="btn btn-primary" id="newCustomerBtn">+ Neuer Kunde</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Kundenname</th>
+                                    <th>Ansprechpartner</th>
+                                    <th>E-Mail</th>
+                                    <th>Telefon</th>
+                                    <th>Vertrag</th>
+                                    <th>SLA</th>
+                                    <th>Aktionen</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customersTableBody">
+                                <!-- Wird durch JavaScript gefüllt -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Reports Page -->
+                <section id="reports" class="page">
+                    <div class="page-header">
+                        <h2>Berichte & Statistiken</h2>
+                    </div>
+
+                    <div class="reports-grid">
+                        <div class="report-card">
+                            <h3>Ticketvolumen (letzte 7 Tage)</h3>
+                            <div class="chart-placeholder" id="chart1">
+                                <canvas id="ticketChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="report-card">
+                            <h3>SLA-Erfüllung</h3>
+                            <div class="sla-stats">
+                                <div class="stat-row">
+                                    <span>Erfüllt</span>
+                                    <span class="stat-value green">94%</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span>Nicht erfüllt</span>
+                                    <span class="stat-value red">6%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="report-card">
+                            <h3>Auslastung pro Team</h3>
+                            <div class="team-load">
+                                <div class="load-row">
+                                    <span>Support Team</span>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                <div class="load-row">
+                                    <span>Technik Team</span>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings Page -->
+                <section id="settings" class="page">
+                    <div class="page-header">
+                        <h2>Einstellungen</h2>
+                    </div>
+
+                    <div class="settings-container">
+                        <div class="settings-section">
+                            <h3>Allgemein</h3>
+                            <div class="setting-item">
+                                <label>Sprache</label>
+                                <select>
+                                    <option>Deutsch</option>
+                                    <option>English</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label>Zeitzone</label>
+                                <select>
+                                    <option>Europe/Berlin (UTC+1)</option>
+                                    <option>Europe/London (UTC+0)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Benachrichtigungen</h3>
+                            <div class="setting-checkbox">
+                                <input type="checkbox" id="notifEmail" checked>
+                                <label for="notifEmail">E-Mail-Benachrichtigungen</label>
+                            </div>
+                            <div class="setting-checkbox">
+                                <input type="checkbox" id="notifBrowser" checked>
+                                <label for="notifBrowser">Browser-Benachrichtigungen</label>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Darstellung</h3>
+                            <div class="setting-item">
+                                <label>Design</label>
+                                <select>
+                                    <option>Hell</option>
+                                    <option>Dunkel</option>
+                                    <option>System</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Sicherheit</h3>
+                            <button class="btn btn-secondary">Passwort ändern</button>
+                            <button class="btn btn-secondary">2FA aktivieren</button>
+                        </div>
+
+                        <div class="settings-section danger-zone">
+                            <h3>Gefahrenzone</h3>
+                            <button class="btn btn-danger" id="clearDataBtn">Alle Daten zurücksetzen</button>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="ticketModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Ticket erstellen/bearbeiten</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="ticketForm">
+                    <div class="form-group">
+                        <label>Titel</label>
+                        <input type="text" id="ticketTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Beschreibung</label>
+                        <textarea id="ticketDescription" rows="4" required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Kategorie</label>
+                            <select id="ticketCategory" required>
+                                <option value="">Wählen...</option>
+                                <option value="hardware">Hardware</option>
+                                <option value="software">Software</option>
+                                <option value="netzwerk">Netzwerk</option>
+                                <option value="support">Support</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Priorität</label>
+                            <select id="ticketPriority" required>
+                                <option value="niedrig">Niedrig</option>
+                                <option value="mittel">Mittel</option>
+                                <option value="hoch">Hoch</option>
+                                <option value="kritisch">Kritisch</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="ticketStatus" required>
+                                <option value="neu">Neu</option>
+                                <option value="in-bearbeitung">In Bearbeitung</option>
+                                <option value="wartend">Wartend</option>
+                                <option value="gelöst">Gelöst</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Zugewiesen zu</label>
+                            <select id="ticketAssignee">
+                                <option value="">Nicht zugewiesen</option>
+                                <option value="max">Max Mustermann</option>
+                                <option value="anna">Anna Schmidt</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Fällig am</label>
+                        <input type="date" id="ticketDueDate">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Speichern</button>
+                        <button type="button" class="btn btn-secondary close-modal">Abbrechen</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Aufgabe erstellen/bearbeiten</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="taskForm">
+                    <div class="form-group">
+                        <label>Titel</label>
+                        <input type="text" id="taskTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Beschreibung</label>
+                        <textarea id="taskDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Priorität</label>
+                            <select id="taskPriority">
+                                <option value="niedrig">Niedrig</option>
+                                <option value="mittel">Mittel</option>
+                                <option value="hoch">Hoch</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Fällig am</label>
+                            <input type="date" id="taskDueDate">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Speichern</button>
+                        <button type="button" class="btn btn-secondary close-modal">Abbrechen</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
